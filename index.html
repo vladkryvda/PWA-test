@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Записник</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/564/564445.png">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { 
+            height: 100%; width: 100%; 
+            background-color: #ffffff; 
+            font-family: -apple-system, system-ui, sans-serif;
+        }
+        #notebook {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            padding: 40px;
+            font-size: 19px;
+            line-height: 1.6;
+            color: #2c3e50;
+            resize: none;
+            background: transparent;
+            display: block;
+        }
+        /* Ховаємо скролбар для естетики, але залишаємо функціонал */
+        #notebook::-webkit-scrollbar { width: 0; }
+    </style>
+</head>
+<body>
+
+    <textarea id="notebook" placeholder="Пишіть тут..."></textarea>
+
+    <script>
+        const notebook = document.getElementById('notebook');
+
+        // Завантаження
+        window.onload = () => {
+            notebook.value = localStorage.getItem('notes') || '';
+        };
+
+        // Збереження при кожному символі
+        notebook.addEventListener('input', () => {
+            localStorage.setItem('notes', notebook.value);
+        });
+
+        // Реєстрація Service Worker для офлайн роботи
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log("PWA готовий"));
+        }
+    </script>
+</body>
+</html>
